@@ -1,28 +1,38 @@
 package com.api.envio_rapido.service;
 
 import com.api.envio_rapido.dto.EnvioRequestDTO;
+import com.api.envio_rapido.dto.ViaCepResponse;
 import com.api.envio_rapido.entity.Envio;
-import com.api.envio_rapido.repository.EnvioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class EnvioService {
 
     @Autowired
-    private EnvioRepository envioRepository;
+    private ViaCepService viaCepService;
 
-    public Envio criarEnvio(EnvioRequestDTO dto) {
+    public Object criarEnvio(EnvioRequestDTO dto) {
+
+        ViaCepResponse origem = viaCepService.consultarCep(dto.getCepOrigem());
+        ViaCepResponse destino = viaCepService.consultarCep(dto.getCepDestino());
+
+        if(origem.getCep() == null || destino.getCep() == null) {
+            throw new IllegalArgumentException("Um dos CEPS informados é invalido.");
+        }
+
         Envio envio = new Envio();
         envio.setNomeRemetente(dto.getNomeRemetente());
         envio.setCepOrigem(dto.getCepOrigem());
         envio.setCepDestino(dto.getCepDestino());
-        envio.setPeso((double) dto.getPeso());
-        envio.setAltura((double) dto.getAltura());
-        envio.setLargura((double) dto.getLargura());
-        envio.setComprimento((double) dto.getComprimento());
+        envio.setPeso(dto.getPeso());
+        envio.setAltura(dto.getAltura());
+        envio.setLargura(dto.getLargura());
+        envio.setComprimento(dto.getComprimento());
 
-        return envioRepository.save(envio);
+        return Map.of("Mensagem", "CEPs validados. Proxima etapa: Calculo de frete");
 
 
 

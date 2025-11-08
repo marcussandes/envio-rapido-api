@@ -2,6 +2,7 @@ package com.api.envio_rapido.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,9 +19,11 @@ public class EnvioRequestDTO {
     private String nomeRemetente;
 
     @NotBlank(message = "O CEP de origem é obrigatório")
+    @Pattern(regexp = "\\d{8}", message = "O CEP deve conter 8 digitos")
     private String cepOrigem;
 
     @NotBlank(message = "O CEP de destino é obrigatório")
+    @Pattern(regexp = "\\d{8}", message = "O CEP deve conter 8 digitos")
     private String cepDestino;
 
     @NotNull(message = "O peso é obrigatório")

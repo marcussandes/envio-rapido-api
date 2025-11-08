@@ -24,10 +24,10 @@ public class Envio {
     private String nomeRemetente;
     private String cepOrigem;
     private String cepDestino;
-    private Double peso;
-    private Double altura;
-    private Double largura;
-    private Double comprimento;
+    private double peso;
+    private double altura;
+    private double largura;
+    private double comprimento;
 
     public Long getId() {
         return id;

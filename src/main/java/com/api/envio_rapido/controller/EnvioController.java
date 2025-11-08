@@ -20,7 +20,7 @@ public class EnvioController {
 
     @PostMapping
     public ResponseEntity<Envio> cadastrarEnvio(@RequestBody @Valid EnvioRequestDTO dto) {
-        Envio envio = envioService.criarEnvio(dto);
+        Envio envio = (Envio) envioService.criarEnvio(dto);
         return ResponseEntity.ok(envio);
     }
 
