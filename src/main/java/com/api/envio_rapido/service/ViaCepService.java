@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 public class ViaCepService {
 
     private final RestTemplate restTemplate;
-    private final String VIA_CEP_URL = "https://www.viacep.com.br/ws/{cep}/json/";
+    private final String VIA_CEP_URL = "https://viacep.com.br/ws/{cep}/json/";
 
 
     public ViaCepService(RestTemplate restTemplate) {

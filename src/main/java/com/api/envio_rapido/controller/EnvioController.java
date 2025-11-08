@@ -5,6 +5,8 @@ import com.api.envio_rapido.entity.Envio;
 import com.api.envio_rapido.service.EnvioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +23,7 @@ public class EnvioController {
     @PostMapping
     public ResponseEntity<Envio> cadastrarEnvio(@RequestBody @Valid EnvioRequestDTO dto) {
         Envio envio = (Envio) envioService.criarEnvio(dto);
-        return ResponseEntity.ok(envio);
+        return ResponseEntity.status(HttpStatus.CREATED).body(envio);
     }
 
 
