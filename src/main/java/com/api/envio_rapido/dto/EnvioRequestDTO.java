@@ -6,10 +6,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class EnvioRequestDTO {
 
@@ -25,7 +21,7 @@ public class EnvioRequestDTO {
     private String cepDestino;
 
     @NotNull(message = "O peso é obrigatório")
-    @Positive(message = "O peso deve ser mairo que zero")
+    @Positive(message = "O peso deve ser maior que zero")
     private double peso;
 
     @NotNull(message = "A altura é obrigatória")

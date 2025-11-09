@@ -1,13 +1,9 @@
 package com.api.envio_rapido.service;
 
-import com.api.envio_rapido.dto.EnvioRequestDTO;
-import com.api.envio_rapido.dto.ViaCepResponse;
+import com.api.envio_rapido.dto.*;
 import com.api.envio_rapido.entity.Envio;
 import com.api.envio_rapido.repository.EnvioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class EnvioService {
@@ -15,13 +11,15 @@ public class EnvioService {
 
     private final ViaCepService viaCepService;
     private final EnvioRepository envioRepository;
+    private final FreteService freteService;
 
-    public EnvioService(ViaCepService viaCepService, EnvioRepository envioRepository) {
+    public EnvioService(ViaCepService viaCepService, EnvioRepository envioRepository, FreteService freteService) {
         this.viaCepService = viaCepService;
         this.envioRepository = envioRepository;
+        this.freteService = freteService;
     }
 
-    public Envio criarEnvio(EnvioRequestDTO dto) {
+    public EnvioResponse criarEnvio(EnvioRequestDTO dto) {
 
         ViaCepResponse origem = viaCepService.consultarCep(dto.getCepOrigem());
         ViaCepResponse destino = viaCepService.consultarCep(dto.getCepDestino());
@@ -44,7 +42,21 @@ public class EnvioService {
 
         Envio envioSalvo = envioRepository.save(envio);
 
-        return envioSalvo;
+        FreteResponse freteMock = freteService.calcularFrete();
+
+        FreteDetail freteDetail = new FreteDetail();
+        freteDetail.setValorPac(freteMock.getValorPac());
+        freteDetail.setPrazoPac(freteMock.getPrazoPac());
+        freteDetail.setValorSedex(freteMock.getValorSedex());
+        freteDetail.setPrazoSedex(freteMock.getPrazoSedex());
+
+        EnvioResponse response = new EnvioResponse();
+        response.setId(envio.getId());
+        response.setMessage("Envio cadastrado e frete calculado com sucesso");
+        response.setFrete(freteDetail);
+        response.setLinkPostagem(freteMock.getLinkPostagem());
+
+        return response;
 
 
 
