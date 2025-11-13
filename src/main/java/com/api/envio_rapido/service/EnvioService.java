@@ -61,14 +61,14 @@ public class EnvioService {
 
         FreteDetail freteDetail = new FreteDetail();
         pacOption.ifPresentOrElse(pac -> {
-                    if (pac.getPrice() != null) {
-                        freteDetail.setValorPac(df.format(pac.getPrice()));
-                    } else {
-                        freteDetail.setValorPac("Não disponivel");
-                    }
-                    freteDetail.setPrazoPac(
-                            pac.getDelivery_time() != null ? pac.getDelivery_time() + " dias uteis" : "N/A"
-                    );
+            if (pac.getPrice() != null) {
+                freteDetail.setValorPac(df.format(pac.getPrice()));
+            } else {
+                freteDetail.setValorPac("Não disponivel");
+            }
+            freteDetail.setPrazoPac(
+                    pac.getDelivery_time() != null ? pac.getDelivery_time() + " dias uteis" : "N/A"
+            );
         }, () -> {
             freteDetail.setValorPac("Não disponivel");
             freteDetail.setPrazoPac("N/A");
@@ -96,10 +96,28 @@ public class EnvioService {
         response.setLinkPostagem("https://melhorenvio.com.br/rastreio/..."); //link genérico
 
         return response;
+    }
 
+    public Envio buscarPorId(Long id) {
+        return envioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Envio não encontrado com ID: " + id));
+    }
 
+    public List<Envio> listarTodos() {
+        return envioRepository.findAll();
+    }
 
+    public Envio atualizarEnvio(Long id, EnvioRequestDTO dto) {
+        Envio envioExistente = buscarPorId(id);
+        envioExistente.setCepOrigem(dto.getCepOrigem());
+        envioExistente.setCepDestino(dto.getCepDestino());
 
+        return envioRepository.save(envioExistente);
+    }
+
+    public void deletarEnvio(Long id) {
+        Envio envio = buscarPorId(id);
+        envioRepository.delete(envio);
     }
 
 
