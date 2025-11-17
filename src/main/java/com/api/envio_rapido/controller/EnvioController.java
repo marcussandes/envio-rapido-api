@@ -4,6 +4,7 @@ import com.api.envio_rapido.dto.EnvioRequestDTO;
 import com.api.envio_rapido.dto.EnvioResponse;
 import com.api.envio_rapido.entity.Envio;
 import com.api.envio_rapido.service.EnvioService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/envios")
+@SecurityRequirement(name = "bearerAuth")
 public class EnvioController {
 
     @Autowired
